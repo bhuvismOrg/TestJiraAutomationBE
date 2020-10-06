@@ -5,12 +5,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+<meta charset="UTF-8">   
     <title>Temporary Share</title>
     <meta content="Temporary Cloud Storage and File Sharing Service poweredby tempCloud" name="description">
   <meta content="tempcloud,Bhuvan,bhuvan s m,Temporary Cloud, File sharing online" name="keywords">
+     <meta name="viewport"content="width=device-width, initial-scale=1, shrink-to-fit=no">
  
   <link href="assets/img/Logo.png" rel="icon">
   <link href="assets/img/Logo.png" rel="apple-touch-icon">
@@ -501,6 +500,17 @@ fd.append('file',files);
         </div>
       </div>
     </div>
+     <script>
+            if ('serviceWorker' in navigator) {
+              console.log("Will the service worker register?");
+              navigator.serviceWorker.register('service-worker.js')
+                .then(function(reg){
+                  console.log("Yes, it did.");
+                }).catch(function(err) {
+                  console.log("No it didn't. This happened: ", err)
+                });
+            }
+          </script>
 
     <script src="btemp.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.5/lib/darkmode-js.min.js"></script>
