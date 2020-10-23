@@ -190,7 +190,7 @@ fd.append('file',files);
 
 
       <div class="row about-extra">
-        <div class="col-lg-6 wow fadeInUp">
+        <div class="col-lg-6 wow fadeInLeft">
           <img src="assets/img/sec.png" class="img-fluid" alt="">
         </div>
         <div class="col-lg-6 wow fadeInUp pt-5 pt-lg-0">
