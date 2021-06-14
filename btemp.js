@@ -15,7 +15,7 @@ body: formdata,
 redirect: 'follow'
 };
 
-fetch("https://nith.ml/API.php", requestOptions)
+fetch("https://link.nithins.me/API.php", requestOptions)
 .then(response => response.text())
 .then(result => document.querySelector('#mylink').innerHTML=JSON.parse(result).url)
 .catch(error => console.log('error', error));
