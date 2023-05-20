@@ -28,7 +28,6 @@ jobs:
           git config user.name "bhuvismOrg"
           git config user.email "bhuvanbhuvism@gmail.com"
           git fetch
-          git checkout master
-          git pull origin master
+          git checkout main
           git cherry-pick ${{ env.merge_commit_sha }}
-          git push origin master
+          git push origin main
