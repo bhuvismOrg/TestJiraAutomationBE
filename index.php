@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">   
-    <title>Temporary Share</title>
+    <title>Temporary</title>
     <meta content="Temporary Cloud Storage and File Sharing Service poweredby tempCloud" name="description">
   <meta content="tempcloud,Bhuvan,bhuvan s m,Temporary Cloud, File sharing online" name="keywords">
      <meta name="viewport"content="width=device-width, initial-scale=1, shrink-to-fit=no">
