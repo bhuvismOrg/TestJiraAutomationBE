@@ -1,0 +1,68 @@
+name: Merge PR to UAT
+
+on:
+  repository_dispatch:
+    types: [merge_to_base]
+
+env:
+  prNo: ${{ github.event.client_payload.prNo }}
+  repo: ${{ github.event.client_payload.repo }}
+  owner: ${{ github.event.client_payload.owner }}
+  issueKey: ${{ github.event.client_payload.issueKey }}
+  issueType: ${{ github.event.client_payload.issueType }}
+  ticketStatus: ${{ github.event.client_payload.ticketStatus }}
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR to UAT
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNo = process.env.prNo;
+            const owner = process.env.owner;
+            const repo = process.env.repo;
+            console.log(prNo, owner, repo, process.env.issueKey);
+            const { data: pullRequest } = await github.pulls.get({
+              owner: owner,
+              repo: repo,
+              pull_number: prNo
+            });
+            
+            await github.pulls.merge({
+              owner: owner,
+              repo: repo,
+              pull_number: prNo
+            });
+            
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+            
+      - name: Transition issue
+        uses: atlassian/gajira-transition@v3
+        with:
+          issue: ${{ github.event.client_payload.issueKey }}
+          transition: "Deployed Staging"
+        if: ${{ env.issueType == 'Story' || env.issueType == 'Task' || env.ticketStatus == 'SoleBug' }}
+        
+      - name: Transition issue
+        uses: atlassian/gajira-transition@v3
+        with:
+          issue: ${{ github.event.client_payload.issueKey }}
+          transition: "Closed"
+        if: ${{ env.issueType == 'Bug' || env.issueType == 'Subtask' && env.ticketStatus != 'SoleBug' }}
+        
+      - name: Delete branch
+        run: |
+          git push origin -d ${{env.issueType}}-${{env.issueKey}}
+        if: ${{ env.issueType == 'Bug' && env.ticketStatus != 'SoleBug' || env.issueType == 'Subtask' }}
